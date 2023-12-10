@@ -1,0 +1,1037 @@
+import java.util.*;
+
+class Deque {
+    Bus_ticket[] bus;   //CREATING ARRAY OF OBJECT (Class Bus_ticket)
+    int size;
+    int front, rear;
+    Scanner sc = new Scanner(System.in);
+
+    Deque(int s) {
+        size = s;
+        bus = new Bus_ticket[size];
+        front = rear = -1;
+    }
+
+// INSERT USER FROM REAR
+    void insertAtRear(String user, String pwd) {
+        if ((front == 0 && rear == size - 1) || (front == rear + 1))
+        // Or condition can be combined as if(front == (rear+1)%size )
+        {
+            System.out.println("Queue is full");
+        } else {
+            if (front == -1) // Inserting first element
+            {
+                front = 0;
+            }
+            rear = (rear + 1) % size;
+            bus[rear] = new Bus_ticket(user, pwd);
+        }
+    }
+
+    // BELOW CODE WILL SEARCH THE USER ACCORING TO ITS USERNAME/EMAIL
+
+    void searchInDeque(String sname) {
+        int check = 0;
+        if (front == -1) {
+            System.out.println("NO BUS TICKETS HAVE BEEN BOOKED !");
+            return;
+        }
+        for (int i = 0; i < bus.length; i++) {
+            if (bus[i] == null) {
+                System.out.println("USER DOESN'T EXIST");
+            } else if (bus[i].user.equalsIgnoreCase(sname)) {
+                System.out.println(bus[i]);
+                check = 1;
+            }
+        }
+        if (check == 0) {
+            System.out.println(sname + "DOESN'T EXIST !");
+        }
+    }
+
+    // THIS WILL DISPLAY THE USER AND THERE TICKET AND TRAVEL DETAILS
+    void cdisplay() {
+        if (front == -1) {
+            System.out.println("NO BUS TICKETS HAVE BEEN BOOKED !");
+        } else {
+            // if (bussportcheck.equals("Bus")) {
+            int i;
+            for (i = front; i != rear; i = (i + 1) % size) {
+                if(bus[i]==null){continue;}
+                System.out.print(bus[i] + " ");
+            }
+            System.out.println(bus[i] + " ");
+        }
+    }
+
+    //THIS CODE IS USED FOR WHEN SOME USER WANT TO DELETE HIS/HER TICKET 
+
+    void deletePartValue(String in_email) {
+        if (front == -1) {
+            System.out.println("NO BUS TICKETS HAVE BEEN BOOKED !");
+            return;
+        }
+
+        boolean found = false;
+        for (int i = 0; i < bus.length; i++) {
+            if (bus[i] != null && bus[i].user.equalsIgnoreCase(in_email)) {
+                // Found the user's ticket, delete it
+                bus[i] = null;
+                found = true;
+                break; // Assuming one user can have only one ticket
+            }
+        }
+        if (found) {
+            System.out.println("Ticket for user " + in_email + " has been deleted.");
+        } else {
+            System.out.println("Ticket for user " + in_email + " not found.");
+        }
+    }
+
+}
+
+class Bus_ticket {
+    Scanner sc = new Scanner(System.in);
+    static int Patel_seats = 50;
+    static int Madhuram_seats = 50;
+    static int Shreenath_seats = 50;
+    static int Mahasagar_seats = 50;
+    static int Safar_seats = 50;
+    String from;
+    String to;
+    String bus, date, bus_timing;
+    int bus_price;
+    String ac;
+    String user, pwd;
+
+    @Override
+    public String toString() {
+        return "\n\n| Username : " + user + "\n| FROM '" + from + "' - TO - '" + to
+                + "'\n| BUS : '" + bus + "'\n| ON " + date + " " + bus_timing + " " + ac;
+    }
+
+    // BELOW CODE WILL MAKE USER TO SELECT CITY , DATES , BUSES AND ASSIGN VALUE TO THEM
+    Bus_ticket(String user, String pwd) {
+        this.user = user;
+        this.pwd = pwd;
+        System.out.println("BUS TICKET BOOKING...\n");
+
+        System.out.println("SELECT SOURCE CITY (WHERE FROM)");
+        from = sc.next();
+        System.out.println("SELECT DESTINATION CITY (WHERE TO)\n");
+        to = sc.next();
+        int flag1 = 0;
+        while (flag1 != 1) {
+            System.out.println("DATES FOR BUSES GOING FROM " + from + " TO " + to);
+            System.out.println("1. FRI - 29 SEP");
+            System.out.println("2. SAT - 30 SEP");
+            System.out.println("3. SUN - 1 OCT");
+            System.out.println("ENTER YOUR CHOICE :");
+            int datechoice = sc.nextInt();
+            switch (datechoice) {
+                case 1:
+                    this.date = "2023-09-29";
+                    flag1 = 1;
+                    break;
+                case 2:
+                    this.date = "2023-09-30";
+                    flag1 = 1;
+                    break;
+                case 3:
+                    this.date = "2023-10-01";
+                    flag1 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag1 = 0;
+                    break;
+            }
+        }
+        System.out.println(from + " -- " + to);
+        System.out.println((int) ((Math.random() * 100) / 2) + " BUSES");
+        int flag2 = 0;
+        while (flag2 != 1) {
+            System.out.println("SEARCHING FOR THE BEST ONES...");
+            System.out.println("1. Patel tours & travels ");
+            System.out.println("** 23:15 - 5:00");
+            System.out.println("** NON A/C Sleeper (2+1)");
+            System.out.println("** 710 RS\n");
+
+            System.out.println("2. Madhuram travels ");
+            System.out.println("** 18:55 - 2:00");
+            System.out.println("** A/C Sleeper (2+1)");
+            System.out.println("** 880 RS\n");
+
+            System.out.println("3. Mahasagar travels");
+            System.out.println("** 5:10 - 11:15");
+            System.out.println("** A/C Sleeper (2+1)");
+            System.out.println("** 560 RS\n");
+
+            System.out.println("4. Shrinath Solitaire Premium Class");
+            System.out.println("** 00:15 - 4:15");
+            System.out.println("** A/C Sleeper (2+1)");
+            System.out.println("** 630 RS\n");
+
+            System.out.println("5. Safar travels");
+            System.out.println("** 3:30 - 9:30");
+            System.out.println("** NON A/C Sleeper (2+1)");
+            System.out.println("** 350 RS\n");
+
+
+            // WHEN USER SELECT ALL THE VALUES THEN IT WILL CALCULATE THE PRICE AND CALLS
+            // THE PAYMENT METHOD 
+
+
+            System.out.println("ENTER YOUR CHOICE");
+            int buschoice = sc.nextInt();
+            switch (buschoice) {
+                case 1:
+                    this.bus = "Patel tours & travels";
+                    this.bus_timing = "23:15 - 5:00";
+                    this.ac = "NON A/C Sleeper (2+1)";
+                    this.bus_price = 710;
+                    System.out.println("Total seats available : " + Patel_seats);
+                    System.out.println("How many seats you want to book  : ");
+                    int c1 = sc.nextInt();
+                    Patel_seats = Patel_seats - c1;
+                    int total_bill = pricecalculation(this.bus_price, c1);
+                    System.out.println("Your total bill is " + total_bill);
+                    payment(c1);
+                    System.out.println(c1 + " Seats Booked Sucessfull");
+
+                    flag2 = 1;
+                    break;
+                case 2:
+                    this.bus = "Madhuram travels";
+                    this.bus_timing = "18:55 - 2:00";
+                    this.ac = "A/C Sleeper (2+1)";
+                    this.bus_price = 880;
+                    System.out.println("Total seats available : " + Madhuram_seats);
+                    System.out.println("How many seats you want to book  : ");
+                    int c2 = sc.nextInt();
+                    Madhuram_seats = Madhuram_seats - c2;
+                    int total_bill2 = pricecalculation(this.bus_price, c2);
+                    System.out.println("Your total bill is " + total_bill2);
+                    payment(c2);
+                    System.out.println(c2 + " Seats Booked Sucessfull");
+                    flag2 = 1;
+                    break;
+                case 3:
+                    this.bus = "Mahasagar travels";
+                    this.bus_timing = "5:10 - 11:15";
+                    this.ac = "A/C Sleeper (2+1)";
+                    this.bus_price = 560;
+                    System.out.println("Total seats available : " + Mahasagar_seats);
+                    System.out.println("How many seats you want to book  : ");
+                    int c3 = sc.nextInt();
+                    Mahasagar_seats = Mahasagar_seats - c3;
+                    int total_bill3 = pricecalculation(this.bus_price, c3);
+                    System.out.println("Your total bill is " + total_bill3);
+                    payment(c3);
+                    System.out.println(c3 + " Seats Bookes sucessfull");
+                    flag2 = 1;
+                    break;
+                case 4:
+                    this.bus = "Shreenath Solitaire Premium Class";
+                    this.bus_timing = "00:15 - 4:15";
+                    this.ac = "A/C Sleeper (2+1)";
+                    this.bus_price = 630;
+                    System.out.println("Total seats available : " + Shreenath_seats);
+                    System.out.println("How many seats you want to book  : ");
+                    int c4 = sc.nextInt();
+                    Shreenath_seats = Shreenath_seats - c4;
+                    int total_bill4 = pricecalculation(this.bus_price, c4);
+                    System.out.println("Your total bill is " + total_bill4);
+                    payment(c4);
+                    System.out.println(c4 + " Seats Booked Sucessfull");
+                    flag2 = 1;
+                    break;
+                case 5:
+                    this.bus = "Safar travels";
+                    this.bus_timing = "3:30 - 9:30";
+                    this.ac = "NON A/C Sleeper (2+1)";
+                    this.bus_price = 350;
+                    System.out.println("Total seats available : " + Safar_seats);
+                    System.out.println("How many seats you want to book  : ");
+                    int c5 = sc.nextInt();
+                    Safar_seats = Safar_seats - c5;
+                    int total_bill5 = pricecalculation(this.bus_price, c5);
+                    System.out.println("Your total bill is " + total_bill5);
+                    payment(c5);
+                    System.out.println(c5 + " Seats Booked Sucessfull");
+                    flag2 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag2 = 0;
+                    break;
+            }
+        }
+    }
+
+    // THIS CODE RETURNS THE PRICE FOR PARTICULAR USER
+    private int pricecalculation(int bus_price, int ticket_count) {
+        return bus_price * ticket_count;
+    }
+
+    // THIS IS THE PAYMENT METHOD 
+
+    static void payment(int total_seat) {
+        Scanner sc = new Scanner(System.in);
+        int pays = 0, pca = 0, pcv = 0, pu = 0, pc = 0, length = 0, pay = 0;
+        String card, cvv, upi, passu;
+        System.out.println("------------------------------------------------");
+        System.out.println("Which payment mode would you like to choose?");
+        System.out.println("1.Debit Card");
+        System.out.println("2.G-Pay");
+
+        pay = sc.nextInt();
+        switch (pay) {
+            case 1: {
+                                //  PAYMENT THROUGH DEBIT CARD 
+
+                System.out.println("Enter Card No.");
+                do {
+                    pca++;
+                    if (pca == 4) {
+                        System.out.println("Sorry you have reached an extent!!");
+                        System.out.println("Please sign in after an hour");
+                        System.exit(0);
+                    }
+                    card = sc.nextLine();
+                    if (card.length() == 16) {
+                        System.out.println("You have enter correct password");
+                        break;
+                    } else {
+                        System.out.println("The card no. should contain 16 digits ");
+                        System.out.println("Enter correct card no.");
+                    }
+                } while (pca < 4);
+
+                System.out.println("Enter CVV No.");
+                do {
+                    pcv++;
+                    if (pcv == 4) {
+                        System.out.println("Sorry you have reached an extent!!");
+                        System.out.println("EXITING THE CODE...");
+                        System.exit(0);
+                    }
+                    cvv = sc.nextLine();
+                    if (cvv.length() == 3) {
+                        System.out.println("Your cvv no. is correct");
+                        break;
+                    } else {
+                        System.out.println("Enter correct cvv");
+                    }
+                } while (pcv < 4);
+
+                System.out.println("Generating OTP.....");
+                Random r = new Random();
+                length = r.nextInt(10000);
+                System.out.println("Your OTP: " + length);
+                System.out.println("Enter OTP");
+                int otp1 = sc.nextInt();
+                if (otp1 == length) {
+                    System.out.println("Your payment is successful!!");
+
+                } else {
+                    System.out.println("Sorry you have enter wrong otp");
+                    System.out.println("Sorry you have reached an extent!!");
+                    System.out.println("Please sign in after an hour");
+                    System.exit(0);
+                }
+                break;
+
+            }
+            case 2: {
+
+                //  PAYMENT THROUGH UPI 
+
+                System.out.println("Enter UPI");
+
+                do {
+                    pu++;
+                    if (pu == 4) {
+                        System.out.println("Sorry you have reached an extent!!");
+                        System.out.println("Please sign in after an hour");
+                        System.exit(0);
+                    }
+                    upi = sc.nextLine();
+                    if (upi.length() == 16) {
+                        System.out.println("UPI id is valid");
+                        break;
+                    } else {
+                        System.out.println("Upi id should contain 16 digits ");
+                    }
+                } while (pu < 4);
+
+                System.out.print("Enter password : ");
+                System.out.print("Password must be of 4 digits : ");
+                do {
+                    pc++;
+                    if (pc == 4) {
+                        System.out.println("Sorry you have reached an extent!!");
+                        System.out.println("Please sign in after an hour");
+                        System.exit(0);
+                    }
+                    passu = sc.nextLine();
+                    if (passu.length() == 4) {
+                        System.out.println("Your payment is successful!!");
+                        break;
+                    } else {
+
+                        System.out.println("password should contain 4 digits");
+                        System.out.print("Enter valid password: ");
+                    }
+                } while (pc < 4);
+                break;
+            }
+            default:
+                System.out.println("Sorry!! Invalid choice");
+        }
+
+    }
+}
+
+class doublyLinkedList1 {
+    class Node {
+        Movie_ticket movie;
+        Node next;
+        Node prev;
+        String user;
+        String pwd;
+
+        Node(String user, String pwd) {
+            movie = new Movie_ticket(user);
+            movie.booking();
+            this.next = null;
+            this.prev = null;
+            this.user = user;
+            this.pwd = pwd;
+        }
+    }
+
+    static Node first = null;
+    // THIS WILL ADD USER AT LAST
+    void insertAtLast(String user, String pwd) {
+        Node n = new Node(user, pwd);
+        if (first == null) {
+            first = n;
+        } else {
+            Node temp = first;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = n;
+            n.prev = temp;
+        }
+    }
+    // IF THERE IS ONLY ONE USER THEN IT WILL BE DELETED BY THIS CODE
+    Node deleteAtFirst() {
+        if (first == null) {
+            System.out.println("NO MOVIE TICKETS HAVE BEEN BOOKED !");
+            return null;
+        } else if (first.next == null) {
+            System.out.println("the only element from the list has been deleted");
+            first = null;
+            return null;
+        } else {
+            Node del = first;
+            first = first.next;
+            first.prev = null;
+            del.next = null;
+            return del;
+        }
+    }
+    // BELOW CODE WILL DELETE PARTICULAR USER USING ITS USERNAME/EMAIL
+    Node deleteValue(String value) {
+        int flag = 0;
+        Node valueCheck = first;
+        Node temp = first;
+        while (valueCheck != null) {
+            if (valueCheck.user.equalsIgnoreCase(value)) {
+                flag = 1;
+            }
+            valueCheck = valueCheck.next;
+        }
+
+        if (flag == 0) {
+            System.out.println(value + " doesn't exist !");
+            return null;
+        } else {
+            if (first.user.equalsIgnoreCase(value)) {
+                Node del = deleteAtFirst();
+                return del;
+            } else {
+                while (!temp.next.user.equalsIgnoreCase(value)) {
+                    temp = temp.next;
+                }
+                if (temp.next.next == null) {
+                    Node del = temp.next;
+                    temp.next = null;
+                    del.prev = null;
+                    return del;
+
+                } else {
+                    Node del = temp.next;
+                    temp.next = del.next;
+                    del.next.prev = temp;
+                    del.next = null;
+                    del.prev = null;
+                    return del;
+                }
+            }
+        }
+    }
+    // BELOW CODE WILL DISPLAY USER AND THERE TICKETS DETAILS
+    void display() {
+
+        if (first == null) {
+            System.out.println("NO MOVIE TICKETS HAVE BEEN BOOKED !");
+        } else {
+            Node temp = first;
+            do {
+                System.out.println(temp.movie);
+                temp = temp.next;
+
+            } while (temp != null);
+
+        }
+    }
+    
+    // BELOW CODE WILL SEARCH THE USER ACCORING TO ITS USERNAME/EMAIL
+    Node search(String sname) {
+        int flag = 0;
+        Node dummy = first;
+        Node temp = first;
+        while (dummy != null) {
+            if (dummy.user.equalsIgnoreCase(sname)) {
+                flag = 1;
+            }
+            dummy = dummy.next;
+        }
+
+        if (flag == 0) {
+            return null;
+        } else {
+            while (!temp.user.equalsIgnoreCase(sname)) {
+                temp = temp.next;
+            }
+            return temp;
+        }
+    }
+
+    static Node extra;
+    static ArrayList<Node> a = new ArrayList<>();
+
+    //THE OBJECT RETURNED BY THE THIS KEYWORD WILL BE STORED IN THE ARRAYLIST
+    // IF THE OBJECT IS ALREADY THERE THEN IT WILL NOT GET STORED IN ARRAYLIST
+
+    public static void checker(Movie_ticket movie) {
+        if (first == null) {
+            System.out.println("NO MOVIE TICKETS HAVE BEEN BOOKED !");
+        } else {
+            Node temp;
+            for (temp = first; temp != null; temp = temp.next) {
+                if (a.contains(temp)) {
+                    continue;
+                }
+                if (movie.title.equals(temp.movie.title) && movie.date.equals(temp.movie.date)
+                        && movie.theater.equals(temp.movie.theater) && movie.showtime.equals(temp.movie.showtime)) {
+                    movie.total_seats = temp.movie.total_seats;
+                    movie.Normal_seats = temp.movie.Normal_seats;
+                    movie.Executive_seats = temp.movie.Executive_seats;
+                    movie.Premium_seats = temp.movie.Premium_seats;
+                    a.add(temp);
+                    break;
+                }
+            }
+        }
+    }
+
+}
+
+class Movie_ticket {
+    String title, language, theater, date, showtime;
+
+    int Normal_seats = 50;
+    int Executive_seats = 50;
+    int Premium_seats = 50;
+    int total_seats = 150;
+    String user;
+    int price;
+    Scanner sc = new Scanner(System.in);
+
+    Movie_ticket(String user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "\n\n| Username : " + user + "\n| Movie title '" + title + "'\n| Language '" + language
+                + "'\n| Theater '" + theater + "'\n| ON " + date + " " + showtime;
+    }
+    // BELOW CODE WILL MAKE USER TO SELECT PARTICULAR OPTION ACCORDING TO THE USER CHOICE
+    // AND THEN ASSIGN THE VALUE TO IT
+    void booking() {
+
+        int flag = 0;
+        while (flag != 1) {
+            System.out.println("AVAILABLE MOVIES");
+            System.out.println("1. Oppenheimer");
+            System.out.println("2. Gadar 2");
+            System.out.println("3. OMG 2");
+            System.out.println("4. Barbie");
+            System.out.println("5. Jawan\n\n");
+            System.out.println("ENTER YOUR CHOICE");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    this.title = "OPPENHEIMER";
+                    this.language = "ENGLISH";
+                    flag = 1;
+                    break;
+                case 2:
+                    this.title = "GADAR 2";
+                    this.language = "HINDI";
+                    flag = 1;
+                    break;
+                case 3:
+                    this.title = "OMG 2";
+                    this.language = "HINDI";
+                    flag = 1;
+                    break;
+                case 4:
+                    this.title = "BARBIE";
+                    this.language = "ENGLISH";
+                    flag = 1;
+                    break;
+                case 5:
+                    this.title = "JAWAN";
+                    this.language = "HINDI";
+                    flag = 1;
+                    break;
+                default:
+                    System.out.println("PLEASE ENTER CORRECT CHOICE !");
+                    flag = 0;
+                    break;
+            }
+        }
+        int flag1 = 0;
+        while (flag1 != 1) {
+            System.out.println("1. FRI - 29 SEP");
+            System.out.println("2. SAT - 30 SEP");
+            System.out.println("3. SUN - 1 SEP");
+            System.out.println("ENTER YOUR CHOICE :");
+            int datechoice = sc.nextInt();
+            switch (datechoice) {
+                case 1:
+                    this.date = "2023-09-29";
+                    flag1 = 1;
+                    break;
+                case 2:
+                    this.date = "2023-09-30";
+                    flag1 = 1;
+                    break;
+                case 3:
+                    this.date = "2023-10-01";
+                    flag1 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag1 = 0;
+                    break;
+            }
+        }
+        int flag2 = 0;
+        while (flag2 != 1) {
+            System.out.println("THEATRES & SHOWTIMES FOR " + title + " ON " + date);
+            System.out.println("1. City Gold Satellite : Ahmedabad ");
+            System.out.println("2. PVR : Motera");
+            System.out.println("3. Nexus One : Ahmedabad\n");
+            System.out.println("ENTER YOUR CHOICE");
+            int theatchoice = sc.nextInt();
+            switch (theatchoice) {
+                case 1:
+                    this.theater = "City Gold Satellite : Ahmedabad";
+                    flag2 = 1;
+                    break;
+                case 2:
+                    this.theater = "PVR : Motera";
+                    flag2 = 1;
+                    break;
+                case 3:
+                    this.theater = "Nexus One : Ahmedabad";
+                    flag2 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag2 = 0;
+                    break;
+            }
+        }
+        int flag3 = 0;
+        while (flag3 != 1) {
+            System.out.println("SHOWTIMES FOR " + theater + " ON " + date + " FOR " + title);
+            System.out.println("1. 10:45 AM");
+            System.out.println("2. 3:15 PM");
+            System.out.println("3. 7:30 PM");
+            int showchoice = sc.nextInt();
+            switch (showchoice) {
+                case 1:
+                    this.showtime = "10:45 AM";
+                    flag3 = 1;
+                    break;
+                case 2:
+                    this.showtime = "3:15 PM";
+                    flag3 = 1;
+                    break;
+                case 3:
+                    this.showtime = "7:30 PM";
+                    flag3 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag3 = 0;
+                    break;
+            }
+        }
+    // "This" KEYWORD PASSES THE CURRENT OBJECT OF THE CLASS
+    // SO IT WILL CHECK WEATHER THE OBJECT IS ALREADY THERE OR NOT
+
+        doublyLinkedList1.checker(this);
+        boolean checkn = true;
+        boolean checke = true;
+        boolean checkp = true;
+        int nchoice = 0;
+        int echoice = 0;
+        int pchoice = 0;
+        int flag4 = 0;
+
+        // THE BELOW CODE WILL BOOK THE SEATS AND CALCULATE THE PRICE 
+        // AND THEN CALLS THE PAYMENT METHOD
+
+
+        while (flag4 != 1) {
+            System.out.println("PRICE FOR " + title);
+            System.out.println("Total seats available : " + total_seats);
+            System.out.println("1. NORMAL - 250 RS");
+            System.out.println("2. EXECUTIVE - 300 RS");
+            System.out.println("3. PREMIUM - 350 RS");
+            int pricechoice = sc.nextInt();
+            switch (pricechoice) {
+                case 1:
+                    this.price = 250;
+                    System.out.println("Normal seats available are : " + Normal_seats);
+                    while (checkn) {
+                        System.out.println("How many Normal seats you want to book ");
+                        nchoice = sc.nextInt();
+                        if (nchoice > Normal_seats) {
+                            System.out.println("Not enough seats available ...Please try again ");
+                            System.out.println("Available seats are : " + Normal_seats);
+                        } else {
+                            checkn = false;
+
+                        }
+
+                    }
+                    this.Normal_seats = this.Normal_seats - nchoice;
+                    this.total_seats = this.total_seats - nchoice;
+                    int totalPrice = this.price * nchoice;
+                    System.out.println("Total Bill is : " + totalPrice);
+                    Bus_ticket.payment(totalPrice);
+                    System.out.println(nchoice + " Seats booked sucessfully");
+                    flag4 = 1;
+                    break;
+                case 2:
+                    this.price = 300;
+                    System.out.println("Executive seats are : " + Executive_seats);
+                    while (checke) {
+                        System.out.println("How many  Executive seats you want to book ");
+                        echoice = sc.nextInt();
+                        if (echoice > Executive_seats) {
+                            System.out.println("Not enough seats available ...Please try again ");
+                            System.out.println("Available seats are : " + Executive_seats);
+                        } else {
+                            checke = false;
+
+                        }
+
+                    }
+                    this.Executive_seats = this.Executive_seats - echoice;
+                    this.total_seats = this.total_seats - echoice;
+                    int totalPrice2 = this.price * echoice;
+                    System.out.println("Total Bill is : " + totalPrice2);
+                    Bus_ticket.payment(totalPrice2);
+
+                    System.out.println(echoice + " Seats booked sucessfully");
+
+                    flag4 = 1;
+                    break;
+                case 3:
+                    this.price = 350;
+                    System.out.println("Premium seats available are : " + Premium_seats);
+                    while (checkp) {
+                        System.out.println("How many Premium seats you want to book  ");
+                        pchoice = sc.nextInt();
+                        if (pchoice > Premium_seats) {
+                            System.out.println("Not enough seats available ...Please try again ");
+                            System.out.println("Available seats are : " + Premium_seats);
+                        } else
+
+                        {
+                            checkp = false;
+
+                        }
+
+                    }
+                    this.Premium_seats = this.Premium_seats - pchoice;
+                    this.total_seats = this.total_seats - Premium_seats;
+                    int totalPrice3 = this.price * pchoice;
+                    System.out.println("Total Bill is : " + totalPrice3);
+                    Bus_ticket.payment(totalPrice3);
+
+                    System.out.println(pchoice + " Seats booked sucessfully");
+
+                    flag4 = 1;
+                    break;
+                default:
+                    System.out.println("Please enter correct choice..");
+                    flag4 = 0;
+                    break;
+            }
+        }
+    }
+}
+
+class dsgroup {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String ph;
+        String name;
+        int vara = 0, cou = 0;
+        String email = null;
+        String pass;
+
+        System.out.println("--------------------WELCOME TO ONLINE TICKET BOOKING SYSTEM--------------------\n");
+        doublyLinkedList1 dll = new doublyLinkedList1();
+        Deque dq = new Deque(60);
+        while (true) {
+            System.out.println("                                                         ");
+
+            System.out.println("1. BOOK A TICKET");
+            System.out.println("2. CANCEL A TICKET");
+            System.out.println("3. SEARCH TICKET OF A SPECIFIC USER");
+            System.out.println("4. DISPLAY ALL MOVIE TICKETS");
+            System.out.println("5. DISPLAY ALL BUS TICKETS");
+            System.out.println("6. EXIT");
+            System.out.println("Enter your choice..");
+            int loop = sc.nextInt();
+            sc.nextLine();
+
+            switch (loop) {
+
+                case 1:
+                    System.out.println("PLEASE RESGISTER YOURSELF AS A NEW USER");
+
+                    System.out.print("Enter E-mail : ");
+                    email = sc.next();
+                    Boolean email_validate = false;
+                    while (email_validate != true) {
+                        if (email == null || email.isEmpty()) {
+                            System.out.println("Invalid email address: " + email);
+                            System.out.println("Enter Again.");
+                            email = sc.next();
+                        } else {
+                            int atIndex = email.indexOf('@');
+                            int dotIndex = email.lastIndexOf('.');
+                            if (atIndex > 0 && dotIndex > atIndex && dotIndex < email.length() - 1) {
+                                email_validate = true;
+                            } else {
+                                System.out.println("Invalid email address: " + email);
+                                System.out.println("Enter Again.");
+                                email = sc.next();
+                            }
+                        }
+                    }
+                    sc.nextLine();
+                    System.out.print("Full name: ");
+                    name = sc.nextLine();
+
+                    System.out.print("Phone Number : ");
+                     while (true) {
+                        ph = sc.nextLine();
+                        for (int i = 0; i < ph.length(); i++) {
+                            if (ph.charAt(i) >= '0' && ph.charAt(i) <= '9') {
+                                if (ph.length() == 10)
+                                 {
+                                    if (ph.charAt(0) == '9' || ph.charAt(0) == '8' || ph.charAt(0) == '7'
+                                            || ph.charAt(0) == '6') 
+                                    {
+                                        vara = 1;
+                                        break;
+                                    } 
+                                    else 
+                                    {
+                                        vara = 0;
+                                    }
+                                } 
+                                else 
+                                {
+                                    vara = 0;
+                                }
+                            }
+                        }
+                        if (vara == 1) {
+                            break;
+                        } else if (vara == 0 && cou <= 2) {
+                            System.out.print("Enter valid number ");
+                            System.out.println(
+                                    "Instructions : The number should start from 9,8,7 or 6\nThe number must have atleast 10 digits");
+                        }
+                    } 
+                    
+                    
+
+                    System.out.println("Set Password : ");
+                    System.out.println("Password must be of length 8 to 15.");
+                    System.out.println("It must contain atleast one uppercase letter.");
+                    System.out.println("It must contain atleast one digit.");
+                    System.out.println("It must not contain any space.");
+
+                    boolean check2 = true;
+                    do {
+
+                        int k, upper = 0, lower = 0, digit = 0, space = 0;
+
+                        pass = sc.nextLine();
+
+                        if (pass.length() >= 8 && pass.length() <= 15) {
+                            for (k = 0; k < pass.length(); k++) {
+                                if (pass.charAt(k) >= 'A' && pass.charAt(k) <= 'Z') {
+                                    upper = 1;
+                                }
+                                if (pass.charAt(k) >= 'a' && pass.charAt(k) <= 'z') {
+                                    lower = 1;
+                                }
+                                if (pass.charAt(k) >= '0' && pass.charAt(k) <= '9') {
+                                    digit = 1;
+                                }
+                                if (pass.charAt(k) == ' ') {
+                                    space = 1;
+                                }
+                            }
+                        }
+                        if (upper == 1 && lower == 1 && digit == 1 && space != 1) {
+                            check2 = false;
+                        }
+                        if (check2 == true) {
+                            System.out.println("Enter valid password ");
+                        }
+
+                    } while (check2);
+
+                    boolean check3 = true;
+                    String copass = "";
+                    System.out.print("Confirm your password : ");
+                    do {
+                        copass = sc.nextLine();
+                        if (pass.equals(copass)) {
+                            check3 = false;
+                        } else {
+                            System.out.println("Renter your password: ");
+                        }
+
+                    } while (check3);
+
+                    System.out.println("                                                         ");
+                    System.out.println("----------------------------------------------------------");
+                    System.out.println("                                                         ");
+                    System.out.println("Congratulations You have sucessfully logged into your account ");
+                    System.out.println("                                                         ");
+                    System.out.println("----------------------------------------------------------");
+
+                    int f = 0;
+                    while (f != 1) {
+                        System.out.println("                                                         ");
+                        System.out.println("\nPress 1 for  MOVIE-TICKET BOOKING");
+                        System.out.println("Press 2 for BUS-TICKET BOOKING");
+                        int ch = sc.nextInt();
+                        switch (ch) {
+                            case 1:
+                                dll.insertAtLast(email, pass);
+                                f = 1;
+                                break;
+                            case 2:
+                                dq.insertAtRear(email, pass);
+                                f = 1;
+                                break;
+                            default:
+                                System.out.println("Please enter a valid choice !");
+                                f = 0;
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
+                    System.out.println("Which ticket do you want to cancel? Movie/Bus");
+                    String cancel = sc.next();
+                    boolean a1 = true;
+                    while (a1) {
+                        System.out.println("Enter EMAILID of whose ticket you want to delete :");
+                        String in_email = sc.next();
+                        if (cancel.equalsIgnoreCase("Movie")) {
+                            dll.deleteValue(in_email);
+                            a1 = false;
+                        } else if (cancel.equalsIgnoreCase("Bus")) {
+                            dq.deletePartValue(in_email);
+
+                            a1 = false;
+                        } else {
+                            System.out.println("Please type Movie/Bus !");
+                            a1 = true;
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.println("Press 1 to search movie tickets");
+                    System.out.println("Press 2 to search bus tickets");
+                    int c = sc.nextInt();
+                    if (c == 1) {
+                        System.out.println("Enter EMAILID of whose ticket you want to search :");
+                        String searchuser = sc.next();
+                        doublyLinkedList1.Node details = dll.search(searchuser);
+                        if (details == null) {
+                            System.out.println("NO MOVIE TICKETS HAS BEEN BOOKED");
+
+                        } else {
+                            System.out.println(details.movie);
+                        }
+
+                    } else {
+                        System.out.println("Enter EMAILID of whose ticket you want to search :");
+                        String searchuser = sc.next();
+
+                        dq.searchInDeque(searchuser);
+
+                    }
+
+                    break;
+                case 4:
+                    System.out.println("DISPLAYING ALL MOVIE TICKETS...");
+                    dll.display();
+                    break;
+                case 5:
+                    System.out.println("DISPLAYING ALL BUS TICKETS...");
+                    dq.cdisplay();
+                    break;
+                case 6:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Please Enter correct choice!");
+                    break;
+            }
+        }
+    }
+}
